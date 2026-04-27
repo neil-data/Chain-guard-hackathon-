@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+chainguard/.venv/
+*.egg-info/
+
+# Next.js
+frontends/.next/
+frontends/out/
+frontends/node_modules/
+frontends/next-env.d.ts
+
+# Environment — MOST IMPORTANT
+.env
+.env.local
+.env.*.local
+frontends/.env.local
+
+# Codex
+.codex-logs/
+frontends/.codex-logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Firebase Admin key (extra safety)
+*service-account*.json
+*firebase-adminsdk*.json
+serviceAccountKey.json
+
+# Python venv variations
+.venv/
+venv/
+env/
+
+# Typescript build
+*.tsbuildinfo
+
+# Vercel
+.vercel

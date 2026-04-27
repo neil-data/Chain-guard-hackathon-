@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Splash247: US widens Hormuz blockade net as dark fleet hunted across Pa",
+    "lat": 32.0,
+    "lon": 53.5,
+    "threat_type": "sanctions",
+    "severity": 8.43,
+    "radius_km": 500,
+    "confidence": 0.686,
+    "verified": true
+  },
+  {
+    "name": "Splash247: Splash Wrap: Next generation MSC",
+    "lat": 26.5,
+    "lon": 56.5,
+    "threat_type": "sanctions",
+    "severity": 7.78,
+    "radius_km": 500,
+    "confidence": 0.8033,
+    "verified": true
+  },
+  {
+    "name": "gCaptain: Greek Shipowner Sends Biggest Oil Tanker Yet Through Hormuz",
+    "lat": 26.5,
+    "lon": 56.5,
+    "threat_type": "war",
+    "severity": 9.17,
+    "radius_km": 700,
+    "confidence": 0.8333,
+    "verified": true
+  },
+  {
+    "name": "gCaptain: Shipping Industry Pushes Back on \u2018Open\u2019 Hormuz Narrative as ",
+    "lat": 26.5,
+    "lon": 56.5,
+    "threat_type": "war",
+    "severity": 8.86,
+    "radius_km": 500,
+    "confidence": 0.7712,
+    "verified": true
+  }
+]
