@@ -19,18 +19,49 @@ export const isFirebaseConfigured = Boolean(
     firebaseConfig.appId,
 );
 
-export const app = isFirebaseConfigured
-  ? getApps().length
-    ? getApp()
-    : initializeApp(firebaseConfig)
-  : null;
-
-export const auth: Auth | null = app ? getAuth(app) : null;
+let appInstance: ReturnType<typeof initializeApp> | null = null;
+let authInstance: Auth | null = null;
 
 let analyticsInstance: Analytics | null = null;
 
+function getClientApp() {
+  if (typeof window === "undefined" || !isFirebaseConfigured) {
+    return null;
+  }
+
+  if (appInstance) {
+    return appInstance;
+  }
+
+  appInstance = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  return appInstance;
+}
+
+export function getClientAuth(): Auth | null {
+  if (typeof window === "undefined" || !isFirebaseConfigured) {
+    return null;
+  }
+
+  if (authInstance) {
+    return authInstance;
+  }
+
+  const app = getClientApp();
+  if (!app) {
+    return null;
+  }
+
+  try {
+    authInstance = getAuth(app);
+    return authInstance;
+  } catch {
+    return null;
+  }
+}
+
 export async function initAnalytics(): Promise<Analytics | null> {
-  if (typeof window === "undefined" || !app) return null;
+  const app = getClientApp();
+  if (!app) return null;
   if (analyticsInstance) return analyticsInstance;
   const supported = await isSupported();
   if (!supported) return null;

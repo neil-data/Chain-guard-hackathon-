@@ -5,7 +5,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { auth, isFirebaseConfigured } from "@/lib/firebase";
+import { getClientAuth, isFirebaseConfigured } from "@/lib/firebase";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function SettingsPage() {
   const [signingOut, setSigningOut] = React.useState(false);
 
   React.useEffect(() => {
+    const auth = getClientAuth();
     if (!auth) {
       return;
     }
@@ -43,6 +44,7 @@ export default function SettingsPage() {
   }, [router]);
 
   const handleSignOut = async () => {
+    const auth = getClientAuth();
     if (!auth) {
       toast.error("Firebase auth is not configured for this deployment.");
       return;

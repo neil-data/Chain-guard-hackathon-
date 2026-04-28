@@ -14,15 +14,16 @@ import {
   ShieldAlert,
   User as UserIcon,
 } from "lucide-react";
-import { auth, isFirebaseConfigured } from "@/lib/firebase";
+import { getClientAuth, isFirebaseConfigured } from "@/lib/firebase";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [authResolved, setAuthResolved] = React.useState(!isFirebaseConfigured || !auth);
+  const [authResolved, setAuthResolved] = React.useState(!isFirebaseConfigured);
   const [currentUser, setCurrentUser] = React.useState<FirebaseUser | null>(null);
 
   React.useEffect(() => {
+    const auth = getClientAuth();
     if (!auth) {
       return;
     }

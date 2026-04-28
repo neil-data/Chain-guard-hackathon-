@@ -17,7 +17,7 @@ import {
 } from "firebase/auth";
 import toast from "react-hot-toast";
 import DynamicGlobe from "@/components/DynamicGlobe";
-import { auth, initAnalytics, isFirebaseConfigured } from "@/lib/firebase";
+import { getClientAuth, initAnalytics, isFirebaseConfigured } from "@/lib/firebase";
 import { gsap } from "@/lib/gsap";
 
 function getAuthErrorMessage(error: unknown, provider: "email" | "google" | "github"): string {
@@ -90,6 +90,7 @@ export default function LoginPage() {
   useEffect(() => {
     void initAnalytics();
 
+    const auth = getClientAuth();
     if (!auth) {
       return;
     }
@@ -106,6 +107,7 @@ export default function LoginPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    const auth = getClientAuth();
     if (isLoading) return;
     if (!auth) {
       toast.error("Firebase auth is not configured for this deployment.");
@@ -170,6 +172,7 @@ export default function LoginPage() {
     providerType: "google" | "github",
     successMessage: string,
   ) => {
+    const auth = getClientAuth();
     if (isLoading) return;
     if (!auth) {
       toast.error("Firebase auth is not configured for this deployment.");
