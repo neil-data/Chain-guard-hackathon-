@@ -52,17 +52,17 @@ export default function AnalyzerPage() {
     setError(null);
 
     const bootLines = [
-      "> CONNECTING TO CHAINGUARD API :8000...",
+      "> CONNECTING TO CHAINGUARD VERCEL FUNCTION...",
       `> ROUTE: ${origin} -> ${destination}`,
       `> CARGO: ${cargoType} . VALUE_NORM: ${cargoValue.toFixed(2)}`,
       "> INITIALIZING CARGO RISK PIPELINE v4.0...",
-      "> INGESTING WEATHER DATA (NOAA)...",
-      "> NLP CLASSIFIER: SCANNING THREAT FEEDS...",
-      "> VERIFICATION ENGINE RUNNING...",
-      "  > trust_score evaluation...",
-      "  > temporal_decay calculation...",
-      "  > geo_confidence mapping...",
-      "> XGBOOST PREDICTION MODEL LOADED",
+      "> INGESTING ROUTE GRAPH + THREAT ZONES...",
+      "> WEATHER RISK MODEL RUNNING...",
+      "> THREAT VERIFICATION INDEX LOADED...",
+      "  > live corridor confidence mapped...",
+      "  > chokepoint exposure scored...",
+      "  > cargo sensitivity weighting...",
+      "> DECISION ENGINE READY",
       "> GRAPH ANALYSIS: YEN'S K-SHORTEST PATHS...",
     ];
 
@@ -87,7 +87,7 @@ export default function AnalyzerPage() {
         `  > Weather Risk Max: ${(summary.weather_risk_max * 100).toFixed(1)}%`,
         `  > Chokepoints: ${summary.n_chokepoints}`,
         `  > War: ${summary.war_flag ? "YES" : "CLEAR"}  Piracy: ${summary.piracy_flag ? "YES" : "CLEAR"}  Sanctions: ${summary.sanctions_flag ? "YES" : "CLEAR"}`,
-        "> GEMINI: gemini-1.5-flash",
+        "> LLM: llama-3.3-70b-versatile",
         "> GENERATING CAPTAIN BRIEFING...",
         `> RISK CLASS: ${summary.risk_class} (${summary.risk_score.toFixed(2)}/100)`,
         "> COMPLETE .",

@@ -3,9 +3,6 @@ import path from 'path';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: false,
   },
@@ -24,7 +21,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ['motion'],
   // Turbopack configuration (replaces webpack config for dev)
   turbopack: {
-    root: path.resolve(__dirname, '..'),
+    root: path.resolve(__dirname),
     resolveAlias: {
       // Tree-shake Three.js to only bundle used modules
       'three': 'three/src/Three.js',

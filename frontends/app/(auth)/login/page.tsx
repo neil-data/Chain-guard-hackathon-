@@ -17,7 +17,7 @@ import {
 } from "firebase/auth";
 import toast from "react-hot-toast";
 import DynamicGlobe from "@/components/DynamicGlobe";
-import { auth, initAnalytics } from "@/lib/firebase";
+import { auth, initAnalytics, isFirebaseConfigured } from "@/lib/firebase";
 import { gsap } from "@/lib/gsap";
 
 function getAuthErrorMessage(error: unknown, provider: "email" | "google" | "github"): string {
@@ -90,6 +90,10 @@ export default function LoginPage() {
   useEffect(() => {
     void initAnalytics();
 
+    if (!auth) {
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         router.replace("/dashboard");
@@ -103,6 +107,10 @@ export default function LoginPage() {
     event.preventDefault();
 
     if (isLoading) return;
+    if (!auth) {
+      toast.error("Firebase auth is not configured for this deployment.");
+      return;
+    }
 
     if (emailMode === "signup" && password.length < 6) {
       toast.error("Password must be at least 6 characters.");
@@ -163,6 +171,10 @@ export default function LoginPage() {
     successMessage: string,
   ) => {
     if (isLoading) return;
+    if (!auth) {
+      toast.error("Firebase auth is not configured for this deployment.");
+      return;
+    }
 
     setAuthAction(providerType);
 
@@ -235,6 +247,12 @@ export default function LoginPage() {
             {emailMode === "signin" ? "Sign in to your intelligence dashboard." : "Create your account to access the dashboard."}
           </p>
 
+          {!isFirebaseConfigured && (
+            <div className="form-item mb-6 rounded-xl border border-amber-600 bg-[#1A2810] px-4 py-3 text-sm text-amber-500">
+              Firebase auth is not configured yet. Add the `NEXT_PUBLIC_FIREBASE_*` variables in Vercel to enable sign-in.
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="form-item">
               <label className="mb-2 block text-xs font-mono uppercase tracking-wider text-brand-gray-2">Email</label>
@@ -289,7 +307,7 @@ export default function LoginPage() {
 
             <div className="form-item">
               <button
-                disabled={isLoading}
+                disabled={!isFirebaseConfigured || isLoading}
                 type="submit"
                 className="flex w-full items-center justify-center rounded-xl bg-teal-500 py-4 text-sm font-semibold text-white transition-colors hover:bg-teal-400 disabled:opacity-60"
               >
@@ -324,7 +342,7 @@ export default function LoginPage() {
             <div className="form-item grid grid-cols-2 gap-3">
               <button
                 type="button"
-                disabled={isLoading}
+                disabled={!isFirebaseConfigured || isLoading}
                 onClick={handleGithubSignIn}
                 className="flex items-center justify-center gap-2 rounded-xl border border-navy-600 bg-navy-700 py-3 text-sm text-brand-gray-1 transition hover:border-teal-500"
               >
@@ -334,7 +352,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
-                disabled={isLoading}
+                disabled={!isFirebaseConfigured || isLoading}
                 className="flex items-center justify-center gap-2 rounded-xl border border-navy-600 bg-navy-700 py-3 text-sm text-brand-gray-1 transition hover:border-teal-500"
               >
                 {authAction === "google" ? <Loader2 className="animate-spin" size={16} /> : <Chrome size={16} />}

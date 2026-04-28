@@ -14,15 +14,19 @@ import {
   ShieldAlert,
   User as UserIcon,
 } from "lucide-react";
-import { auth } from "@/lib/firebase";
+import { auth, isFirebaseConfigured } from "@/lib/firebase";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [authResolved, setAuthResolved] = React.useState(false);
+  const [authResolved, setAuthResolved] = React.useState(!isFirebaseConfigured || !auth);
   const [currentUser, setCurrentUser] = React.useState<FirebaseUser | null>(null);
 
   React.useEffect(() => {
+    if (!auth) {
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setAuthResolved(true);
@@ -34,6 +38,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return () => unsubscribe();
   }, [router]);
+
+  if (!isFirebaseConfigured) {
+    return <>{children}</>;
+  }
 
   if (!authResolved || !currentUser) {
     return (

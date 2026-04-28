@@ -1,6 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAnalytics, isSupported, type Analytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,13 +12,25 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+export const isFirebaseConfigured = Boolean(
+  firebaseConfig.apiKey &&
+    firebaseConfig.authDomain &&
+    firebaseConfig.projectId &&
+    firebaseConfig.appId,
+);
+
+export const app = isFirebaseConfigured
+  ? getApps().length
+    ? getApp()
+    : initializeApp(firebaseConfig)
+  : null;
+
+export const auth: Auth | null = app ? getAuth(app) : null;
 
 let analyticsInstance: Analytics | null = null;
 
 export async function initAnalytics(): Promise<Analytics | null> {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined" || !app) return null;
   if (analyticsInstance) return analyticsInstance;
   const supported = await isSupported();
   if (!supported) return null;

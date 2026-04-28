@@ -5,7 +5,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { auth } from "@/lib/firebase";
+import { auth, isFirebaseConfigured } from "@/lib/firebase";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -14,6 +14,10 @@ export default function SettingsPage() {
   const [signingOut, setSigningOut] = React.useState(false);
 
   React.useEffect(() => {
+    if (!auth) {
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
         router.replace("/login");
@@ -39,6 +43,11 @@ export default function SettingsPage() {
   }, [router]);
 
   const handleSignOut = async () => {
+    if (!auth) {
+      toast.error("Firebase auth is not configured for this deployment.");
+      return;
+    }
+
     setSigningOut(true);
 
     try {
@@ -60,6 +69,12 @@ export default function SettingsPage() {
       </div>
 
       <div className="mt-8 space-y-6">
+        {!isFirebaseConfigured && (
+          <div className="rounded-2xl border border-amber-600 bg-[#1A2810] p-6 text-sm text-amber-500">
+            Firebase auth is currently disabled. Add the public Firebase environment variables in Vercel to enable account sessions.
+          </div>
+        )}
+
         <div className="rounded-2xl border border-navy-600 bg-navy-800 p-6">
           <h3 className="mb-4 flex items-center gap-2 font-semibold text-brand-gray-1">
             <Settings size={16} className="text-teal-500" /> Account
@@ -88,7 +103,7 @@ export default function SettingsPage() {
           </div>
           <button
             onClick={handleSignOut}
-            disabled={signingOut}
+            disabled={!isFirebaseConfigured || signingOut}
             className="mt-6 flex items-center gap-2 text-sm font-medium text-red-500 transition hover:text-red-500/80"
           >
             <LogOut size={16} /> {signingOut ? "Signing out..." : "Sign out"}

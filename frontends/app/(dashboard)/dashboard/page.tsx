@@ -54,10 +54,10 @@ function mapResponseToView(response: AnalysisResponse) {
     },
     systemStatus: {
       newsCrawler: "ACTIVE",
-      xgBoost: "LOADED",
-      gemini: response.llm_briefing ? "CONNECTED" : "OFFLINE",
+      xgBoost: "SIMULATED",
+      gemini: response.llm_briefing ? "CONNECTED" : "FALLBACK",
       api: "ONLINE",
-      weatherApi: "SYNTHETIC",
+      weatherApi: "MODELLED",
     },
     weatherRiskMax: summary.weather_risk_max,
     briefingMarkdown:
@@ -132,7 +132,7 @@ export default function DashboardPage() {
         <Navigation2 size={48} className="mb-6 text-brand-gray-3" />
         <h2 className="text-2xl font-bold text-brand-gray-1">No Analysis Yet</h2>
         <p className="mt-3 max-w-md text-brand-gray-2">
-          Run your first route analysis to populate the dashboard with a live route score, threats, and a Gemini
+          Run your first route analysis to populate the dashboard with a live route score, threats, and an AI
           captain&apos;s briefing.
         </p>
         <Link
@@ -338,8 +338,8 @@ export default function DashboardPage() {
           {[
             { icon: Rss, label: "News Crawler", value: data.systemStatus.newsCrawler, valueClass: "text-teal-500" },
             { icon: Cpu, label: "XGBoost", value: data.systemStatus.xgBoost, valueClass: "text-teal-500" },
-            { icon: MessageSquare, label: "Gemini 1.5 Flash", value: data.systemStatus.gemini, valueClass: data.systemStatus.gemini === "CONNECTED" ? "text-teal-500" : "text-brand-gray-2" },
-            { icon: Server, label: "API :8000", value: data.systemStatus.api, valueClass: "text-teal-500" },
+            { icon: MessageSquare, label: "Groq LLM", value: data.systemStatus.gemini, valueClass: data.systemStatus.gemini === "CONNECTED" ? "text-teal-500" : "text-brand-gray-2" },
+            { icon: Server, label: "Vercel API", value: data.systemStatus.api, valueClass: "text-teal-500" },
             { icon: Cloud, label: "Weather API", value: data.systemStatus.weatherApi, valueClass: "text-amber-500" },
           ].map((item) => (
             <div key={item.label} className="flex items-center justify-between border-b border-navy-600 py-3 last:border-0">
@@ -377,7 +377,7 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-3">
             <div className="rounded-full border border-teal-500 bg-navy-800 px-3 py-1 text-[10px] font-mono text-teal-500">
-              Gemini 1.5 Flash . Google
+              Groq . Llama 3.3 70B
             </div>
             <RefreshCw size={14} className="cursor-pointer text-brand-gray-2 transition hover:text-brand-gray-1" />
           </div>
