@@ -105,8 +105,8 @@ Composite confidence: **Ψ(a) = 0.30·T(s) + 0.25·τ(t) + 0.20·G(a) + 0.25·C*
 </td>
 <td width="50%">
 
-### 🤖 Gemini Tactical Briefing
-**Gemini 1.5 Flash** generates a confidential captain's briefing with:
+### 🤖### 🤖 AI Tactical Briefing (Gemini + Groq)
+Gemini 1.5 Flash + Groq API generate a confidential captain's briefing with:
 - Threat summary
 - Weather assessment  
 - Route recommendation
@@ -145,26 +145,26 @@ Role-based access for Maritime Officers.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        CHAINGUARD v4.0                       │
+│                        CHAINGUARD v4.0                      │
 ├─────────────────────┬───────────────────────────────────────┤
-│     FRONTEND        │            BACKEND                      │
-│   (Next.js 15)      │          (Python/FastAPI)              │
-│                     │                                         │
+│     FRONTEND        │            BACKEND                    │
+│   (Next.js 15)      │          (Python/FastAPI)             │
+│                     │                                       │
 │  ┌─────────────┐    │    ┌──────────────────────────────┐   │
-│  │  Firebase   │    │    │   News Ingestion Pipeline     │   │
+│  │  Firebase   │    │    │   News Ingestion Pipeline     │  │
 │  │    Auth     │    │    │  6 RSS feeds × 30min cycle   │   │
 │  └─────────────┘    │    └──────────────┬───────────────┘   │
-│                     │                   ↓                     │
+│                     │                   ↓                   │
 │  ┌─────────────┐    │    ┌──────────────────────────────┐   │
-│  │   Gemini    │◄───┼────│   NLP Verification Engine    │   │
-│  │  Briefings  │    │    │  Ψ(a) confidence scoring     │   │
+│  │   Gemini+   │◄───┼────│   NLP Verification Engine    │   │
+│  │  Groq AI    │    │    │  Ψ(a) confidence scoring     │   │
 │  └─────────────┘    │    └──────────────┬───────────────┘   │
-│                     │                   ↓                     │
+│                     │                   ↓                   │
 │  ┌─────────────┐    │    ┌──────────────────────────────┐   │
 │  │ Route Map   │◄───┼────│   XGBoost Risk Model         │   │
 │  │ Dashboard   │    │    │   R² = 0.9691, 16 features   │   │
 │  └─────────────┘    │    └──────────────┬───────────────┘   │
-│                     │                   ↓                     │
+│                     │                   ↓                   │
 │  ┌─────────────┐    │    ┌──────────────────────────────┐   │
 │  │  Threat     │◄───┼────│   Yen's K-Shortest Path      │   │
 │  │  Intel      │    │    │   3 optimal routes computed  │   │
@@ -180,7 +180,7 @@ Role-based access for Maritime Officers.
 |-------|-----------|---------|
 | **Frontend** | Next.js 15, TypeScript, Tailwind CSS | UI & routing |
 | **Auth** | Firebase Authentication | Email, Google, GitHub OAuth |
-| **AI Briefing** | Google Gemini 1.5 Flash | Captain's tactical briefing |
+| **AI Engine** | Gemini 1.5 Flash + Groq API | Ultra-fast AI inference & captain's briefing |
 | **ML Model** | XGBoost, scikit-learn | Risk scoring (R²=0.9691) |
 | **Routing** | Yen's K-Shortest Path | Alternative route computation |
 | **NLP** | Custom verification engine | Threat confidence scoring |
@@ -241,7 +241,8 @@ FIREBASE_ADMIN_PRIVATE_KEY=
 
 # Google Gemini (get from aistudio.google.com)
 GEMINI_API_KEY=
-
+# Groq API (ultra-fast inference)
+GROQ_API_KEY=
 # Backend
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
